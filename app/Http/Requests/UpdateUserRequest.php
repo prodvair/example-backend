@@ -32,18 +32,4 @@ class UpdateUserRequest extends FormRequest
             'birthday'      => 'date_format:Y-m-d',
         ];
     }
-
-    /**
-     * Return failed validation messages
-     *
-     * @return json
-     */
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success'   => 'error',
-            'message'   => 'Validation errors',
-            'data'      => $validator->errors()
-        ]));
-    }
 }

@@ -27,7 +27,6 @@ class AuthController extends Controller
         // Checking request method
         if (! $request->isMethod('post')) {
             return response()->json([
-                'status'    => 'error',
                 'message'   => 'Bad method',
             ], 405);
         }
@@ -40,7 +39,6 @@ class AuthController extends Controller
         if (!$token) {
             // If failed then return message about it
             return response()->json([
-                'status'    => 'error',
                 'message'   => 'Unauthorized',
             ], 401);
         }
@@ -48,7 +46,6 @@ class AuthController extends Controller
         // Else auth user in system and return he's token
         $user = Auth::user();
         return response()->json([
-                'status'        => 'success',
                 'user'          => $user,
                 'authorization' => [
                     'token' => $token,
@@ -76,7 +73,6 @@ class AuthController extends Controller
         // Auth in sistem and return user data
         $token = Auth::login($user);
         return response()->json([
-            'status'        => 'success',
             'message'       => 'User created successfully',
             'user'          => $user,
             'authorization' => [
@@ -95,7 +91,6 @@ class AuthController extends Controller
     {
         Auth::logout();
         return response()->json([
-            'status'    => 'success',
             'message'   => 'Successfully logged out',
         ]);
     }
@@ -108,7 +103,6 @@ class AuthController extends Controller
     public function me()
     {
         return response()->json([
-            'status'    => 'success',
             'user'      => Auth::user(),
         ]);
     }
@@ -121,7 +115,6 @@ class AuthController extends Controller
     public function refresh()
     {
         return response()->json([
-            'status'        => 'success',
             'user'          => Auth::user(),
             'authorization' => [
                 'token' => Auth::refresh(),

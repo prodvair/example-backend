@@ -37,18 +37,4 @@ class UpdateUserPasswordRequest extends FormRequest
             'confirm_password' => 'required|same:new_password',
         ];
     }
-
-    /**
-     * Return failed validation messages
-     *
-     * @return json
-     */
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success'   => 'error',
-            'message'   => 'Validation errors',
-            'data'      => $validator->errors()
-        ]));
-    }
 }

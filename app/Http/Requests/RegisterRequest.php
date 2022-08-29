@@ -22,18 +22,4 @@ class RegisterRequest extends FormRequest
             'password'      => 'required|string|min:6',
         ];
     }
-
-    /**
-     * Return failed validation messages
-     *
-     * @return json
-     */
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success'   => 'error',
-            'message'   => 'Validation errors',
-            'data'      => $validator->errors()
-        ]));
-    }
 }
