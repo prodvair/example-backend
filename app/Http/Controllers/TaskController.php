@@ -42,6 +42,7 @@ class TaskController extends Controller
         $task = Task::create([
             'title'     => $request->title,
             'content'   => $request->content,
+            'color'     => $request->color,
             'user_id'   => auth()->user()->id
         ]);
 
@@ -59,6 +60,7 @@ class TaskController extends Controller
 
         $task->title    = $request->title;
         $task->content  = $request->content;
+        $task->color    = $request->color;
 
         if ($task->save()) {
             return response()->json([
