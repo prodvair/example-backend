@@ -13,9 +13,6 @@ class Task extends Model
         'title',
         'content',
         'color',
-    ];
-
-    protected $hidden = [
         'user_id'
     ];
 

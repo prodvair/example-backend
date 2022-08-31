@@ -34,7 +34,7 @@ class TaskController extends Controller
         }
 
 
-        return TaskResource::collection(Task::query()->where($where)->paginate($limit));
+        return TaskResource::collection(Task::query()->where($where)->orderBy('created_at', 'DESC')->paginate($limit));
     }
 
     public function store(TaskRequest $request)
@@ -51,49 +51,27 @@ class TaskController extends Controller
 
     public function update(TaskRequest $request, Task $task)
     {
-        if (!isset($task->title)) {
-            return response()->json([
-                'status'    => 'error',
-                'message'   => 'not found task',
-            ]);
-        }
-
         $task->title    = $request->title;
         $task->content  = $request->content;
         $task->color    = $request->color;
 
-        if ($task->save()) {
-            return response()->json([
-                'status'    => 'success',
-                'task'      => $task,
-            ]);
-        }
+        $task->save();
 
-        return response()->json([
-            'status'    => 'error',
-            'message'   => 'something is wrong',
-        ], 500);
+        return new TaskResource($task);
     }
 
     public function destroy(Task $task)
     {
-        if (!isset($task->title) || $task->user_id !== auth()->user()->id) {
+        if ($task->user_id !== auth()->user()->id) {
             return response()->json([
-                'status'    => 'error',
                 'message'   => 'not found task',
-            ]);
+            ], 404);
         }
 
-        if ($task->delete()) {
-            return response()->json([
-                'status'    => 'success',
-                'message'   => 'Task is deleted',
-            ]);
-        }
+        $task->delete();
 
         return response()->json([
-            'status'    => 'error',
-            'message'   => 'something is wrong',
-        ], 500);
+            'message'   => 'Task is deleted',
+        ]);
     }
 }
