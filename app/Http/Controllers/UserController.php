@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UpdateUserPasswordRequest;
+use App\http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -33,34 +34,17 @@ class UserController extends Controller
             $user->birthday     = $request->birthday;
         }
 
-        if ($user->save()) {
-            return response()->json([
-                'status'    => 'success',
-                'user'      => $user,
-            ]);
-        }
+        $user->save();
 
-        return response()->json([
-            'status'    => 'error',
-            'message'   => 'something is wrong',
-        ], 500);
+        return new UserResource($user);
     }
 
     public function updatePassword(UpdateUserPasswordRequest $request)
     {
         $user = User::find(auth()->user()->id);
 
-        if ($user->newPassword($request->new_password)->save()) {
-            return response()->json([
-                'status'    => 'success',
-                'user'      => $user,
-            ]);
-        }
+        $user->newPassword($request->new_password);
 
-        return response()->json([
-            'status'    => 'error',
-            'message'   => 'something is wrong',
-        ], 500);
-
+        return new UserResource($user);
     }
 }
