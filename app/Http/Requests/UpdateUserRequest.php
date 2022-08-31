@@ -28,7 +28,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'first_name'    => 'string|max:255',
             'last_name'     => 'string|max:255',
-            'email'         => 'string|email|max:255|unique:users',
+            'email'         => 'string|email|max:255',
             'birthday'      => 'date_format:Y-m-d',
         ];
     }
